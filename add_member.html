@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Member</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Success Message Styling */
+        .message {
+            display: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Success Message -->
+    <div id="success-message" class="message {% if added %}show{% endif %}">
+        Member added successfully!
+    </div>
+    
+    <div class="container">
+        <h1>Add New Member</h1>
+        <form method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter member's name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter member's email" required>
+
+            <button type="submit">Add Member</button>
+        </form>
+        <a href="/members/view">Back to Members List</a>
+    </div>
+
+    <script>
+        // Check if the 'added' flag is present
+const urlParams = new URLSearchParams(window.location.search);
+const added = urlParams.get('added');
+
+if (added) {
+    // Show the success message
+    const successMessage = document.getElementById('success-message');
+    successMessage.classList.add('show');
+
+    // Hide the success message after 2 minutes
+    setTimeout(() => {
+        successMessage.classList.remove('show');
+    }, 1000); // 1minutes messagew hide
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 14px;
+            color: #007BFF;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Toast (Popup) Styles */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: visibility 0s, opacity 0.5s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Edit Book</h1>
+        <form method="POST" id="editForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{ book['title'] }}" required>
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" value="{{ book['author'] }}" required>
+
+            <div class="buttons">
+                <button type="submit">Save Changes</button>
+                <a href="/books/view">Back to Books</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast Message (Popup) -->
+    <div id="toast" class="toast">
+        Book details updated successfully!
+    </div>
+
+    <script>
+        document.getElementById('editForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Get form data
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+
+    // Send data to the server
+    const response = await fetch(window.location.pathname, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, author }),
+    });
+
+    if (response.ok) {
+        // If the server successfully updates the book
+        const data = await response.json();
+        console.log(data);
+
+        // Show the toast message
+        var toast = document.getElementById('toast');
+        toast.classList.add('show');
+
+        // Hide the toast message after 3 seconds
+        setTimeout(function () {
+            toast.classList.remove('show');
+            // Redirect back to the books view page
+            window.location.href = '/books/view';
+        }, 3000);
+    } else {
+        // Handle errors (optional)
+        alert('Failed to update book details. Please try again.');
+    }
+});
+
+    </script>
+</body>
+</html>

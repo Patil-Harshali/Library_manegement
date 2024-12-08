@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Management System</title>
+    <style>
+
+.button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            background-color: #fff;
+            border: 2px solid #007BFF;
+            border-radius: 30px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #007BFF;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .button.secondary {
+            background-color: #f8f9fa;
+            border: 2px solid #6c757d;
+            color: #6c757d;
+        }
+
+        .button.secondary:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Library Management System</h1>
+    <a href="/books/view" class="button">View Books</a> | <a href="/members/view" class="button">View Members</a>
+</body>
+</html>

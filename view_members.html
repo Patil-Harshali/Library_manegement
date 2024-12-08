@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Members</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.added {
+            background-color: #4CAF50; /* Green for added */
+            color: white;
+        }
+
+        .message.updated {
+            background-color: #2196F3; /* Blue for updated */
+            color: white;
+        }
+
+        .message.deleted {
+            background-color: #f44336; /* Red for deleted */
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions button {
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .actions .delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .actions .delete:hover {
+            background-color: #d32f2f;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination a {
+            padding: 10px 15px;
+            margin: 0 5px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination .disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            background-color: #fff;
+            border: 2px solid #007BFF;
+            border-radius: 30px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #007BFF;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .button.secondary {
+            background-color: #f8f9fa;
+            border: 2px solid #6c757d;
+            color: #6c757d;
+        }
+
+        .button.secondary:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <h1>Members List</h1>
+
+    {% if added %}
+        <div id="addMessage" class="message show added">Member added successfully!</div>
+    {% endif %}
+    {% if updated %}
+        <div id="updateMessage" class="message show updated">Member updated successfully!</div>
+    {% endif %}
+    {% if deleted %}
+        <div id="deleteMessage" class="message show deleted">Member deleted successfully!</div>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+                <tr>
+                    <td>{{ member['name'] }}</td>
+                    <td>{{ member['email'] }}</td>
+                    <td class="actions">
+                        <a href="/members/edit/{{ member['id'] }}">Edit</a>
+                        <form method="POST" action="/members/delete/{{ member['id'] }}" style="display:inline;">
+                            <button class="delete" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if not is_first_page %}
+            <a href="/members/view?page={{ current_page - 1 }}">Previous</a>
+        {% else %}
+            <span class="disabled">Previous</span>
+        {% endif %}
+
+        {% for page in range(1, total_pages + 1) %}
+            <a href="/members/view?page={{ page }}" class="{% if page == current_page %}disabled{% endif %}">{{ page }}</a>
+        {% endfor %}
+
+        {% if not is_last_page %}
+            <a href="/members/view?page={{ current_page + 1 }}">Next</a>
+        {% else %}
+            <span class="disabled">Next</span>
+        {% endif %}
+    </div>
+
+    <br>
+    <a href="/members/add" class="button">Add New Member</a>
+
+    <script>
+        // Function to hide the success messages after a set duration
+        function hideMessages() {
+            const messages = document.querySelectorAll('.message.show');
+            messages.forEach(message => {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 1000); // Hide after 1 minutes
+            });
+        }
+
+        // Call the function to hide messages
+        hideMessages();
+    </script>
+    
+    <a href="/" class="button">Back to Home</a>
+</body>
+</html>
