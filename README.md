@@ -1,2 +1,2 @@
 # Library_manegement
-this is library manegement project 
+This is library Management Project
